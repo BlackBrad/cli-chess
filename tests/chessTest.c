@@ -12,15 +12,25 @@
 // Include the .c file so that we can test static functions
 #include "../src/chess.c"
 
-#if 0
-static void validate_board(chess_t *chess_game, uint8_t expected_board[BOARD_SIZE][BOARD_SIZE]){
+static void validate_piece_type_placement(
+        chess_t *chess_game, uint8_t expected_board[BOARD_SIZE][BOARD_SIZE]){
     for (uint8_t i = 0; i < BOARD_SIZE; i++){
         for (uint8_t j = 0; j < BOARD_SIZE; j++){
-            assert_int_equal(chess_game->board[i][j], expected_board[i][j]);
+            assert_int_equal(
+                    chess_game->board[i][j]->type, expected_board[i][j]);
         }
     }
 }
-#endif
+
+static void validate_piece_colour_placement(
+        chess_t *chess_game, uint8_t expected_board[BOARD_SIZE][BOARD_SIZE]){
+    for (uint8_t i = 0; i < BOARD_SIZE; i++){
+        for (uint8_t j = 0; j < BOARD_SIZE; j++){
+            assert_int_equal(
+                    chess_game->board[i][j]->colour, expected_board[i][j]);
+        }
+    }
+}
 
 static void test_fill_board_with_empty_spaces(void **state){
     chess_t test_chess;
@@ -59,8 +69,7 @@ static void test_populate_default_pawn_row_with_empty_spaces(void **state){
     }
 }
 
-#if 0
-static void test_create_new_board(void **state){
+static void test_create_new_board_type_placement(void **state){
     chess_t test_chess;
     uint8_t expected_chess_board[BOARD_SIZE][BOARD_SIZE] = {
     {ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK},
@@ -75,14 +84,32 @@ static void test_create_new_board(void **state){
 
     create_new_board(&test_chess);
 
-    validate_board(&test_chess, expected_chess_board);
+    validate_piece_type_placement(&test_chess, expected_chess_board);
 }
-#endif
+
+static void test_create_new_board_colour_placement(void **state){
+    chess_t test_chess;
+    uint8_t expected_chess_board[BOARD_SIZE][BOARD_SIZE] = {
+    {BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK},
+    {BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK},
+    {NO_COLOUR, NO_COLOUR, NO_COLOUR,  NO_COLOUR, NO_COLOUR, NO_COLOUR, NO_COLOUR,  NO_COLOUR},
+    {NO_COLOUR, NO_COLOUR, NO_COLOUR,  NO_COLOUR, NO_COLOUR, NO_COLOUR, NO_COLOUR,  NO_COLOUR},
+    {NO_COLOUR, NO_COLOUR, NO_COLOUR,  NO_COLOUR, NO_COLOUR, NO_COLOUR, NO_COLOUR,  NO_COLOUR},
+    {NO_COLOUR, NO_COLOUR, NO_COLOUR,  NO_COLOUR, NO_COLOUR, NO_COLOUR, NO_COLOUR,  NO_COLOUR},
+    {WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE},
+    {WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE}
+    };
+
+    create_new_board(&test_chess);
+
+    validate_piece_colour_placement(&test_chess, expected_chess_board);
+}
 int main(void){
     const struct CMUnitTest tests[] = {
       cmocka_unit_test(test_fill_board_with_empty_spaces),
       cmocka_unit_test(test_populate_default_pawn_row_with_empty_spaces),
-      //  cmocka_unit_test(test_create_new_board),
+      cmocka_unit_test(test_create_new_board_type_placement),
+      cmocka_unit_test(test_create_new_board_colour_placement),
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);

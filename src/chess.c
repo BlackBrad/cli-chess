@@ -21,22 +21,26 @@
 
 #include <stdio.h>
 
+static piece_t *create_new_piece(uint8_t colour, uint8_t type){
+    piece_t *new_piece = calloc(1, sizeof(piece_t));
+
+    if (!new_piece){
+        printf("Unable to allocate memory!\n");
+        return NULL;
+    }
+
+    new_piece->colour = colour;
+    new_piece->type = type;
+
+    return new_piece;
+}
+
 static void fill_board_with_empty_spaces(chess_t *chess_game) {
     assert(chess_game != NULL);
 
     for (uint8_t i = 0; i < BOARD_SIZE; i++){
         for (uint8_t j = 0; j < BOARD_SIZE; j++){
-            piece_t *new_piece = malloc(sizeof(piece_t));
-
-            if (!new_piece){
-                printf("Unable to allocate memory!\n");
-                return;
-            }
-
-            new_piece->colour = NO_COLOUR;
-            new_piece->type = EMPTY;
-
-            chess_game->board[i][j] = new_piece;
+            chess_game->board[i][j] = create_new_piece(NO_COLOUR, EMPTY);
         }
     }
 }
@@ -62,31 +66,41 @@ static void populate_default_pawn_rows(chess_t *chess_game){
 static void create_new_board(chess_t *chess_game){
     fill_board_with_empty_spaces(chess_game);
     populate_default_pawn_rows(chess_game);
-#if 0
-    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_LEFT_ROOK]    = ROOK;
-    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_RIGHT_ROOK]   = ROOK;
-    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_LEFT_KNIGHT]  = KNIGHT;
-    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_RIGHT_KNIGHT] = KNIGHT;
-    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_LEFT_BISHOP]  = BISHOP;
-    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_RIGHT_BISHOP] = BISHOP;
-    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_QUEEN]        = QUEEN;
-    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_KING]         = KING;
 
-    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_LEFT_ROOK]    = ROOK;
-    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_RIGHT_ROOK]   = ROOK;
-    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_LEFT_KNIGHT]  = KNIGHT;
-    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_RIGHT_KNIGHT] = KNIGHT;
-    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_LEFT_BISHOP]  = BISHOP;
-    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_RIGHT_BISHOP] = BISHOP;
-    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_QUEEN]        = QUEEN;
-    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_KING]         = KING;
+    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_LEFT_ROOK] =
+        create_new_piece(BLACK, ROOK);
+    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_RIGHT_ROOK] =
+        create_new_piece(BLACK, ROOK);
+    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_LEFT_KNIGHT] =
+        create_new_piece(BLACK, KNIGHT);
+    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_RIGHT_KNIGHT] =
+        create_new_piece(BLACK, KNIGHT);
+    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_LEFT_BISHOP] =
+        create_new_piece(BLACK, BISHOP);
+    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_RIGHT_BISHOP] =
+        create_new_piece(BLACK, BISHOP);
+    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_QUEEN] =
+        create_new_piece(BLACK, QUEEN);
+    chess_game->board[DEFAULT_BLACK_OTHER_PIECE_ROW][DEFAULT_KING] =
+        create_new_piece(BLACK, KING);
 
-    for (uint8_t i = DEFAULT_BLACK_PAWN_ROW + 1; i < DEFAULT_WHITE_PAWN_ROW; i++){
-        for (uint8_t j = 0; j < BOARD_SIZE; j++){
-            chess_game->board[i][j] = EMPTY;
-        }
-    }
-#endif
+
+    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_LEFT_ROOK] =
+        create_new_piece(WHITE, ROOK);
+    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_RIGHT_ROOK] =
+        create_new_piece(WHITE, ROOK);
+    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_LEFT_KNIGHT] =
+        create_new_piece(WHITE, KNIGHT);
+    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_RIGHT_KNIGHT] =
+        create_new_piece(WHITE, KNIGHT);
+    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_LEFT_BISHOP] =
+        create_new_piece(WHITE, BISHOP);
+    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_RIGHT_BISHOP] =
+        create_new_piece(WHITE, BISHOP);
+    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_QUEEN] =
+        create_new_piece(WHITE, QUEEN);
+    chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_KING] =
+        create_new_piece(WHITE, KING);
 }
 
 chess_t chess_new_game(){
@@ -97,6 +111,7 @@ chess_t chess_new_game(){
     return new_chess_game;
 }
 
+
 void free_chess(chess_t *chess_game){
     for (uint8_t i = 0; i < BOARD_SIZE; i++){
         for (uint8_t j = 0; j < BOARD_SIZE; j++){
@@ -104,3 +119,4 @@ void free_chess(chess_t *chess_game){
         }
     }
 }
+
