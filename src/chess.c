@@ -20,14 +20,16 @@
 #define DEFAULT_QUEEN 3
 #define DEFAULT_KING 4
 
-#include <stdio.h>
-
 static void fill_board_with_empty_spaces(chess_t *chess_game) {
     assert(chess_game != NULL);
 
     for (uint8_t i = 0; i < BOARD_SIZE; i++){
         for (uint8_t j = 0; j < BOARD_SIZE; j++){
-            chess_game->board[i][j] = piece_new(NO_COLOUR, EMPTY);
+            piece_t *new_piece = piece_new(NO_COLOUR, EMPTY, i, j);
+
+            assert(new_piece != NULL);
+
+            chess_game->board[i][j] = new_piece;
         }
     }
 }
@@ -54,6 +56,8 @@ static void populate_default_pawn_rows(chess_t *chess_game){
 }
 
 static void create_new_board(chess_t *chess_game){
+    assert(chess_game != NULL);
+
     fill_board_with_empty_spaces(chess_game);
     populate_default_pawn_rows(chess_game);
 
@@ -99,7 +103,7 @@ static void create_new_board(chess_t *chess_game){
     chess_game->board[
         DEFAULT_WHITE_OTHER_PIECE_ROW][DEFAULT_KING]->type = KING;
 
-    // Now set all the pieces in DEFAULT_WHITE_OTHER_PIECE_ROW to BLACK
+    // Now set all the pieces in DEFAULT_WHITE_OTHER_PIECE_ROW to WHITE
     for (uint8_t i = 0; i < BOARD_SIZE; i++){
         chess_game->board[DEFAULT_WHITE_OTHER_PIECE_ROW][i]->colour = WHITE;
     }
@@ -120,5 +124,5 @@ void free_chess(chess_t *chess_game){
             free(chess_game->board[i][j]);
         }
     }
+    chess_game = NULL;
 }
-

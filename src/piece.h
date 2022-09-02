@@ -25,6 +25,8 @@ enum Piece_colours {
 typedef struct Piece {
     uint8_t colour;
     uint8_t type;
+    uint8_t xpos;
+    uint8_t ypos;
 } piece_t;
 
 /* new_piece
@@ -41,6 +43,6 @@ typedef struct Piece {
  *     *piece_t: A pointer to a new piece_t, returns NULL instead if something
  *               went wrong.
  */
-piece_t *piece_new(uint8_t colour, uint8_t type);
+piece_t *piece_new(uint8_t colour, uint8_t type, uint8_t xpos, uint8_t ypos);
 
 #endif
