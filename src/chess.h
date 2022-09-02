@@ -2,36 +2,16 @@
 #define BLACKBRAD_CLI_CHESS
 
 #define BOARD_SIZE 8
+#define MAX_CAPUTRED_PIECES 15
 
 #include <stdint.h>
 
-enum PIECES {
-    EMPTY      = 0, // No pieces on board
-    PAWN       = 1,
-    ROOK       = 2,
-    KNIGHT     = 3,
-    BISHOP     = 4,
-    QUEEN      = 5,
-    KING       = 6,
-    NUM_PIECES = 7
-};
-
-enum Colours {
-    WHITE       = 0,
-    BLACK       = 1,
-    NUM_COLOURS = 2,
-    NO_COLOUR   = 3
-};
-
-typedef struct Piece{
-    uint8_t colour;
-    uint8_t type;
-} piece_t;
+#include "piece.h"
 
 typedef struct Player{
     uint8_t colour;
     uint8_t points;
-    uint8_t pieces[];
+    uint8_t captured_pieces[MAX_CAPUTRED_PIECES];
 } player_t;
 
 typedef struct Chess{
