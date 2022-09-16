@@ -18,8 +18,7 @@ piece_t *piece_new(uint8_t colour, uint8_t type, uint8_t xpos, uint8_t ypos){
     piece_t *new_piece = NULL;
 
     // Ensure that the colour and type are within valid bounds
-    if ((colour > NO_COLOUR || colour < 0) ||
-        (type >= NUM_PIECES || type < 0)){
+    if (colour > NO_COLOUR || type >= NUM_PIECES){
         // We can't create a piece if the colour and/or piece type are invalid
         // so return NULL instead
         return NULL;

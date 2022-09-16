@@ -17,36 +17,34 @@ static void test_piece_representation_pawn(void **state){
     piece_t new_piece;
     new_piece.colour = BLACK;
     new_piece.type = PAWN;
-    char *expected_pawn = "BP";
+    char *expected = "BP";
 
     char *pawn = piece_representation(&new_piece);
-    assert_string_equal(pawn, expected_pawn);
+    assert_string_equal(pawn, expected);
 
     free(pawn);
 
     new_piece.colour = WHITE;
-    expected_pawn = "WP";
+    expected = "WP";
 
     pawn = piece_representation(&new_piece);
-    assert_string_equal(pawn, expected_pawn);
+    assert_string_equal(pawn, expected);
 }
 
 static void test_piece_representation_knight(void **state){
     piece_t new_piece;
     new_piece.colour = BLACK;
     new_piece.type = KNIGHT;
-    char *expected_pawn = "BN";
+    char *expected_black = "BN";
+    char *expected_white = "WN";
 
     char *pawn = piece_representation(&new_piece);
-    assert_string_equal(pawn, expected_pawn);
-
-    free(pawn);
+    assert_string_equal(pawn, expected);
 
     new_piece.colour = WHITE;
-    expected_pawn = "WN";
 
     pawn = piece_representation(&new_piece);
-    assert_string_equal(pawn, expected_pawn);
+    assert_string_equal(pawn, expected);
 }
 
 int main(void){
